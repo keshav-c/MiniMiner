@@ -7,9 +7,11 @@ defmodule MiniMiner.Application do
 
   @impl true
   def start(_type, _args) do
+    numworkers = System.get_env("WORKERS") || 4
+    interval = System.get_env("INTERVAL") || 1000
+
     children = [
-      # Starts a worker by calling: MiniMiner.Worker.start_link(arg)
-      # {MiniMiner.Worker, arg}
+      {MiniMiner.Miner, {numworkers, interval, name: MiniMiner.Miner}}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
