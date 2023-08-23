@@ -1,9 +1,30 @@
 defmodule MiniMiner do
-  @url "https://hackattic.com/challenges/mini_miner/problem?access_token=8588d0e947f66656"
+  require Logger
+
+  @prob_url "https://hackattic.com/challenges/mini_miner/problem?access_token=8588d0e947f66656"
+  @soln_url "https://hackattic.com/challenges/mini_miner/solve?access_token=8588d0e947f66656&playground=1"
+
+  def main() do
+    data = get_data()
+    Logger.info("Difficulty: #{Map.get(data, "difficulty")}")
+    Logger.info("Data:\n#{inspect(get_in(data, ["block", "data"]))}")
+    {_block, nonce, hash} = calc_nonce(data)
+    Logger.info("Nonce: #{nonce}\tHash: #{hash}")
+    send_solution(nonce)
+  end
 
   def get_data() do
-    {:ok, {{_version, 200, _msg}, _headers, body}} = :httpc.request(:get, {@url, []}, [], [])
+    {:ok, {{_version, 200, _msg}, _headers, body}} = :httpc.request(:get, {@prob_url, []}, [], [])
     Jason.decode!(body)
+  end
+
+  def send_solution(nonce) do
+    body = Jason.encode!(%{"nonce" => nonce})
+
+    :httpc.request(:post, {@soln_url, [], 'application/json', body}, [], [])
+    |> IO.inspect()
+    |> inspect()
+    |> Logger.info()
   end
 
   @doc """
