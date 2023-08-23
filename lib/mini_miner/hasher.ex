@@ -8,7 +8,7 @@ defmodule MiniMiner.Hasher do
       {:found, 45, "00D696DB487CAF06A2F2A8099479577C3785C37B3D8A77DC413CFB19EC2E0141"}
 
       iex> MiniMiner.Hasher.find_nonce(8, %{"nonce" => nil, "data" => []}, 100, 199)
-      {:not_found, 100, 199}
+      :not_found
   """
   def find_nonce(difficulty, data, min, max) do
     Enum.each(min..max, fn nonce ->
@@ -16,7 +16,7 @@ defmodule MiniMiner.Hasher do
       if solved?(difficulty, hash), do: throw({nonce, hash})
     end)
 
-    {:not_found, min, max}
+    :not_found
   catch
     {nonce, hash} -> {:found, nonce, Base.encode16(hash)}
   end
