@@ -16,7 +16,7 @@ string_hash = hash |> Base.encode16 |> String.downcase
 ```
 Pattern match
 ```
-<<0::size(difficulty), _::binary>> = bitstring_hash
+<<0::size(difficulty), _::bits>> = bitstring_hash
 ```
 Synchronous request to get the problem
 ```
@@ -24,20 +24,18 @@ Synchronous request to get the problem
   :httpc.request(:get, {'https://hackattic.com/challenges/mini_miner/problem?access_token=xxx', []}, [], [])
 ```
 
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `mini_miner` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:mini_miner, "~> 0.1.0"}
-  ]
-end
+## Install
+```sh
+mix deps.get
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/mini_miner>.
+## Run
 
+```sh
+TOKEN=xxx WORKERS=10 iex -S mix
+```
+
+## Test
+```sh
+mix test
+```
