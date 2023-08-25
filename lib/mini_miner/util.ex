@@ -30,7 +30,7 @@ defmodule MiniMiner.Util do
       iex> MiniMiner.Util.solution_url("bacd", true)
       "https://hackattic.com/challenges/mini_miner/solve?access_token=bacd&playground=1"
   """
-  def solution_url(token, playground \\ false) do
+  def solution_url(token, playground) do
     uri = URI.new!("#{@host}/challenges/mini_miner/solve")
 
     query =
@@ -49,15 +49,15 @@ defmodule MiniMiner.Util do
     Jason.decode!(body)
   end
 
-  def send_solution(token, nonce) do
-    solve_url = solution_url(token)
+  def send_solution(token, nonce, opts \\ []) do
+    playground = Keyword.get(opts, :playground, false)
+    solve_url = solution_url(token, playground)
     body = Jason.encode!(%{"nonce" => nonce})
 
     :httpc.request(:post, {solve_url, [], 'application/json', body}, [], [])
-    |> IO.inspect()
     |> inspect()
     |> Logger.info()
 
-    :ok
+    :sent
   end
 end
