@@ -13,7 +13,7 @@ defmodule MiniMiner.Application do
     }
 
     children = [
-      {Task.Supervisor, name: MiniMiner.HasherSupervisor, restart: :transient},
+      {Task.Supervisor, name: MiniMiner.HasherSupervisor},
       {MiniMiner.Miner, {args, name: MiniMiner.Miner}}
     ]
 
