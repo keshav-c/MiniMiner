@@ -43,12 +43,14 @@ defmodule MiniMiner.Util do
   end
 
   @spec get_data(String.t()) :: map()
-  def get_data(prob_url) do
+  def get_data(token) do
+    prob_url = prob_url(token)
     {:ok, {{_version, 200, _msg}, _headers, body}} = :httpc.request(:get, {prob_url, []}, [], [])
     Jason.decode!(body)
   end
 
-  def send_solution(solve_url, nonce) do
+  def send_solution(token, nonce) do
+    solve_url = solution_url(token)
     body = Jason.encode!(%{"nonce" => nonce})
 
     :httpc.request(:post, {solve_url, [], 'application/json', body}, [], [])
