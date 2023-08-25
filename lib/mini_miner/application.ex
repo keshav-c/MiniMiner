@@ -7,11 +7,14 @@ defmodule MiniMiner.Application do
 
   @impl true
   def start(_type, _args) do
-    numworkers = System.get_env("WORKERS") || 4
-    interval = System.get_env("INTERVAL") || 1000
+    args = %{
+      numworkers: System.get_env("WORKERS") || 4,
+      token: System.get_env("TOKEN")
+    }
 
     children = [
-      {MiniMiner.Miner, {numworkers, interval, name: MiniMiner.Miner}}
+      {Task.Supervisor, name: MiniMiner.HasherSupervisor, restart: :transient},
+      {MiniMiner.Miner, {args, name: MiniMiner.Miner}}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
