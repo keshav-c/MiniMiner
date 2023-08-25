@@ -58,6 +58,6 @@ defmodule MiniMiner.Util do
     |> inspect()
     |> Logger.info()
 
-    :sent
+    :success
   end
 end

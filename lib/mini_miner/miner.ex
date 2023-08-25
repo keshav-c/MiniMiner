@@ -90,7 +90,23 @@ defmodule MiniMiner.Miner do
       [state.token, nonce, [playground: true]],
       restart: :transient
     )
+    |> Task.await()
+    |> (&"Solution sent: #{inspect(&1)}").()
+    |> Logger.info()
 
     {:noreply, %{state | solved?: true}}
   end
+
+  # @impl true
+  # def handle_info({_, :sent}, state) do
+  #   Logger.info("Solution sent and response received.")
+  #   {:noreply, state}
+  # end
+
+  # @impl true
+  # def handle_info(msg, state) do
+  #   Logger.info("Message received: #{inspect(msg)}")
+  #   Logger.info("State: #{inspect(state)}")
+  #   {:noreply, state}
+  # end
 end
