@@ -8,16 +8,20 @@ defmodule MiniMiner.Hasher do
       {:found, 45, "00D696DB487CAF06A2F2A8099479577C3785C37B3D8A77DC413CFB19EC2E0141"}
 
       iex> MiniMiner.Hasher.check_nonce(8, %{"nonce" => nil, "data" => []}, 53)
-      :not_found
+      {:not_found}
   """
   def check_nonce(difficulty, data, nonce) do
     hash = hash(data, nonce)
 
-    if solved?(difficulty, hash) do
-      {:found, nonce, Base.encode16(hash)}
-    else
-      {:not_found}
-    end
+    report =
+      if solved?(difficulty, hash) do
+        {:found, nonce, Base.encode16(hash)}
+      else
+        {:not_found}
+      end
+
+    MiniMiner.Miner.report(report)
+    report
   end
 
   @doc """
