@@ -24,7 +24,7 @@ defmodule MiniMiner.Util do
 
   ## Examples
 
-      iex> MiniMiner.Util.solution_url("bacd")
+      iex> MiniMiner.Util.solution_url("bacd", false)
       "https://hackattic.com/challenges/mini_miner/solve?access_token=bacd"
 
       iex> MiniMiner.Util.solution_url("bacd", true)
