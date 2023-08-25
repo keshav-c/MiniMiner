@@ -33,6 +33,7 @@ mix deps.get
 
 ```sh
 TOKEN=xxx WORKERS=10 iex -S mix
+iex> MiniMiner.run()
 ```
 
 ## Test
